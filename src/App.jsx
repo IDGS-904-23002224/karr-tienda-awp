@@ -41,9 +41,11 @@ function Catalogo({ fotos }) {
 function App({ cargando, fotos }) {
     return (
         <div className="container py-5">
-            <Header titulo="Axelrrotes" subtitulo="Catalogo Axelrrotes Oficial - AWP" />
+            <Header titulo="Axelrrotes" subtitulo="Catalogo Axelrrotes Oficial - PWA" />
             
             {}
+            <PWABadge />
+
             {cargando ? (
                 <div className="text-center mt-5">
                     <div className="spinner-border text-success" role="status" style={{ width: '3rem', height: '3rem' }}></div>
