@@ -1,8 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import appLogo from '/favicon.svg'
-import PWABadge from './PWABadge.jsx'
-import './App.css'
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthProvider, AuthContext } from './AuthContext.jsx';
+import Login from './Login.jsx';
+import Dashboard from './Dashboard.jsx';
+import './MiFooter.js';
+
+import reactLogo from './assets/react.svg';
+import appLogo from '/favicon.svg';
+import PWABadge from './PWABadge.jsx';
+import './App.css';
+
+const PrivateRoute = ({ children }) => {
+    const { state } = useContext(AuthContext);
+    return state.isAuthenticated ? children : <Navigate to="/" />;
+};
 
 function Header({ titulo, subtitulo }) {
     return (
@@ -13,49 +25,25 @@ function Header({ titulo, subtitulo }) {
     );
 }
 
-function FotoCard({ foto }) {
+const NotFound = () => <h2>404 - Página no encontrada</h2>;
+
+export default function App() {
     return (
-        <div className="col-md-4 mb-4">
-            <div className="card shadow-sm h-100 border-0">
-                <img src={foto.url} className="card-img-top" alt={foto.title} />
-                <div className="card-body">
-                    <p className="card-text text-capitalize small text-center fw-medium">
-                        {foto.title}
-                    </p>
-                </div>
-            </div>
-        </div>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <PrivateRoute>
+                                <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route path="*" element={<NotFound />} /> {/* Ruta Not Found */}
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
 }
-
-function Catalogo({ fotos }) {
-    return (
-        <div className="row">
-            {fotos.map(foto => (
-                <FotoCard key={foto.id} foto={foto} />
-            ))}
-        </div>
-    );
-}
-
-function App({ cargando, fotos }) {
-    return (
-        <div className="container py-5">
-            <Header titulo="Axelrrotes" subtitulo="Catalogo Axelrrotes Oficial - PWA" />
-            
-            {}
-            <PWABadge />
-
-            {cargando ? (
-                <div className="text-center mt-5">
-                    <div className="spinner-border text-success" role="status" style={{ width: '3rem', height: '3rem' }}></div>
-                    <h4 className="mt-3 text-secondary">Cargando fotos en 3 segundos...</h4>
-                </div>
-            ) : (
-                <Catalogo fotos={fotos} />
-            )}
-        </div>
-    );
-}
-
-export default App

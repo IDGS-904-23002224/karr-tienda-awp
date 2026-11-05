@@ -14,9 +14,9 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'https://cdn-icons-png.flaticon.com/512/2232/2232688.png', // Icono genérico
+            src: 'favicon.svg', // Icono genérico
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/svg+xml'
           }
         ]
       }
