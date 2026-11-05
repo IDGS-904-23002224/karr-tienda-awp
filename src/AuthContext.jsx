@@ -1,9 +1,7 @@
 import { createContext, useReducer, useEffect } from 'react';
 
-// 1. Definir el Contexto
 export const AuthContext = createContext();
 
-// 2. Definir el Reducer
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
@@ -15,9 +13,7 @@ const authReducer = (state, action) => {
     }
 };
 
-// 3. Crear el Provider
 export const AuthProvider = ({ children }) => {
-    // Inicializar estado leyendo de localStorage
     const initialState = {
         isAuthenticated: JSON.parse(localStorage.getItem('isAuth')) || false,
         user: JSON.parse(localStorage.getItem('user')) || null,
@@ -25,7 +21,6 @@ export const AuthProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    // Efecto para sincronizar el estado con localStorage
     useEffect(() => {
         localStorage.setItem('isAuth', JSON.stringify(state.isAuthenticated));
         localStorage.setItem('user', JSON.stringify(state.user));

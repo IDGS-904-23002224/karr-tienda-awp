@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,18 +6,25 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { dispatch } = useContext(AuthContext);
+    const { state, dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (state.isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [state.isAuthenticated, navigate]);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Validación del formulario
+        // Validación 
         if (!email.includes('@') || password.length < 6) {
             setError('Correo inválido o contraseña menor a 6 caracteres.');
             return;
         }
 
-        // Simulación de Login exitoso
+        // Simulación login
         setError('');
         dispatch({ type: 'LOGIN', payload: { email } });
         navigate('/dashboard');
